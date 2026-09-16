@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="description" content="LockFit — Preview wallpapers on real iPhone and Android lock screens. Avoid Dynamic Island, clocks, and punch-holes cutting faces. Export safe-crop PNG. $0.99 lifetime." />
+  <title>LockFit — Lock Screen Wallpaper Safe Zones</title>
+  <link rel="icon" href="favicon.svg" type="image/svg+xml" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <header class="app-header">
+    <div class="brand">
+      <img src="favicon.svg" alt="" width="28" height="28" />
+      <span>LockFit</span>
+      <span class="tag">$0.99 lifetime</span>
+    </div>
+    <div class="header-actions">
+      <span id="licenseBadge" class="badge">Free</span>
+      <button type="button" class="btn btn-sm btn-primary" id="btnUnlock">Unlock</button>
+    </div>
+  </header>
+
+  <main class="layout" id="appRoot">
+    <aside class="sidebar">
+      <div class="ad-slot" data-ad="sidebar-top" aria-hidden="true">Ad placeholder</div>
+
+      <section class="panel">
+        <h2>Wallpaper</h2>
+        <label class="upload-zone" id="uploadZone" for="fileInput">
+          <strong>Drop image or click</strong>
+          PNG, JPG, WebP
+          <input type="file" id="fileInput" accept="image/png,image/jpeg,image/webp,image/*" />
+        </label>
+        <div class="file-name" id="fileName">No file selected</div>
+      </section>
+
+      <section class="panel">
+        <h2>Device</h2>
+        <div class="device-list" id="deviceList" role="listbox" aria-label="Device presets"></div>
+      </section>
+
+      <section class="panel">
+        <h2>Transform</h2>
+        <div class="controls">
+          <div>
+            <div class="control-row"><label for="zoomRange">Zoom</label><span id="zoomLabel">100%</span></div>
+            <input type="range" id="zoomRange" min="50" max="300" value="100" />
+          </div>
+          <button type="button" class="btn btn-block btn-sm" id="btnReset">Reset pan &amp; zoom</button>
+          <label class="toggle"><input type="checkbox" id="showGuides" checked /> Show safe-zone guides</label>
+          <label class="toggle"><input type="checkbox" id="showOverlay" checked /> Show lock UI overlay</label>
+        </div>
+      </section>
+    </aside>
+
+    <section class="preview-wrap">
+      <div class="preview-stage" id="previewStage">
+        <div class="phone-frame" id="phoneFrame">
+          <div class="wallpaper-layer" id="wallpaperLayer">
+            <img id="wallpaperImg" alt="" hidden />
+          </div>
+          <div class="safe-guide" id="safeGuide" hidden></div>
+          <div class="overlay-layer" id="overlayLayer"></div>
+          <div class="placeholder-hint" id="placeholderHint">
+            Upload a wallpaper to preview how Dynamic Island, clocks, and punch-holes will sit on it.
+          </div>
+        </div>
+      </div>
+      <p class="hint-bar">Drag to pan · Scroll or pinch to zoom · Export crops to wallpaper pixels</p>
+    </section>
+
+    <aside class="sidebar">
+      <div class="ad-slot" data-ad="sidebar-right" aria-hidden="true">Ad placeholder</div>
+
+      <section class="panel">
+        <h2>Export</h2>
+        <div class="export-opts">
+          <label class="toggle"><input type="radio" name="exportMode" value="safe" checked /> Wallpaper only (safe crop)</label>
+          <label class="toggle"><input type="radio" name="exportMode" value="overlay" /> Include UI overlay</label>
+        </div>
+        <button type="button" class="btn btn-primary btn-block" id="btnExport" disabled>Export PNG</button>
+        <p class="hint-bar" style="margin-top:0.75rem;text-align:left" id="exportNote">
+          Free exports include a LockFit watermark. Unlock for clean PNGs + all devices.
+        </p>
+      </section>
+
+      <section class="panel">
+        <h2>About</h2>
+        <p style="margin:0;font-size:0.85rem;color:var(--muted)">
+          LockFit helps you preview any wallpaper on real lock screens so faces stay clear of Dynamic Island, notches, punch-holes, and clock widgets.
+        </p>
+      </section>
+    </aside>
+  </main>
+
+  <footer class="app-footer">
+    LockFit · Preview · crop · hang · $0.99 lifetime unlock
+  </footer>
+
+  <!-- Unlock modal: license key only -->
+  <div class="modal-backdrop" id="unlockModal" hidden>
+    <div class="modal" role="dialog" aria-labelledby="unlockTitle" aria-modal="true">
+      <h3 id="unlockTitle">Unlock LockFit — $0.99</h3>
+      <p>Get every device preset and watermark-free exports. Enter the license key you receive after purchase.</p>
+      <a id="checkoutLink" class="checkout-link btn btn-primary" href="#" target="_blank" rel="noopener" hidden>Buy $0.99 lifetime</a>
+      <p id="checkoutPlaceholder" style="font-size:0.85rem;color:var(--warn);margin-bottom:0.75rem" hidden>
+        Checkout URL not configured yet — see PAYMENTS.md. You can still redeem a key below.
+      </p>
+      <label for="licenseInput" class="control-row" style="margin-bottom:0.35rem">License key</label>
+      <input type="text" id="licenseInput" placeholder="IB-LOCK-XXXX-XXXX" autocomplete="off" spellcheck="false" />
+      <div class="modal-actions">
+        <button type="button" class="btn btn-primary" id="btnRedeem">Redeem key</button>
+        <button type="button" class="btn btn-ghost" id="btnCloseModal">Close</button>
+      </div>
+      <p class="modal-msg" id="modalMsg"></p>
+    </div>
+  </div>
+
+  <div class="toast" id="toast" hidden></div>
+
+  <script src="config.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>

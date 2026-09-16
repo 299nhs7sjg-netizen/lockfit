@@ -1,0 +1,7 @@
+KEYS.PRIVATE.md
+.DS_Store
+node_modules/
+*.log
+.env
+.idea/
+.vscode/
