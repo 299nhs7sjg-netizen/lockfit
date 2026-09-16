@@ -90,10 +90,26 @@
     }
   ];
 
-  const cfg = window.LOCKFIT_CONFIG || { VALID_KEYS: [], checkoutUrl: "" };
-  const validKeys = new Set(
-    (cfg.VALID_KEYS || []).map((k) => normalizeKey(k))
-  );
+  const cfg = window.LOCKFIT_CONFIG || { checkoutUrl: "" };
+  /* Seed test keys in app.js only — never put license keys in public config.js */
+  const VALID_KEYS = new Set([
+    "IB-LOCK-LHRC-MKX2",
+    "IB-LOCK-ZYFL-TT8Z",
+    "IB-LOCK-N5KS-5RHT",
+    "IB-LOCK-X8FD-Y9RX",
+    "IB-LOCK-EY47-SWTP",
+    "IB-LOCK-G99Q-HZJH",
+    "IB-LOCK-XSDV-3M2H",
+    "IB-LOCK-HGLA-XRLT",
+    "IB-LOCK-MR6T-DFHY",
+    "IB-LOCK-YVFS-UZ2N",
+    "IB-LOCK-A27E-QQ28",
+    "IB-LOCK-6YYV-PAE8",
+    "IB-LOCK-SZEM-YGMP",
+    "IB-LOCK-DBJC-K6ZE",
+    "IB-LOCK-78NF-QNCN"
+  ].map((k) => normalizeKey(k)));
+  const validKeys = VALID_KEYS;
 
   let unlocked = false;
   let currentDevice = DEVICES.find((d) => d.id === FREE_DEVICE_IDS[0]) || DEVICES[0];
