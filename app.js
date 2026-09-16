@@ -6,6 +6,7 @@
   "use strict";
 
   const STORAGE_KEY = "lockfit_license_v1";
+  const SOURCE_KEY = "lockfit_unlock_src_v1";
   const FREE_DEVICE_IDS = ["iphone-15-pro", "pixel-8"];
 
   /** Approximate device presets (CSS px for preview; logical sizes for export). */
@@ -148,18 +149,55 @@
       const raw = localStorage.getItem(STORAGE_KEY);
       if (!raw) return;
       const key = normalizeKey(raw);
-      if (validKeys.has(key)) {
+      if (!key || key === "1") {
+        localStorage.removeItem(STORAGE_KEY);
+        localStorage.removeItem(SOURCE_KEY);
+        return;
+      }
+      if (validKeys.has(key) || localStorage.getItem(SOURCE_KEY) === "gumroad") {
         unlocked = true;
       } else {
         localStorage.removeItem(STORAGE_KEY);
+        localStorage.removeItem(SOURCE_KEY);
       }
     } catch (_) {}
   }
 
-  function saveLicense(key) {
+  function saveLicense(key, viaGumroad) {
     try {
       localStorage.setItem(STORAGE_KEY, key);
+      localStorage.setItem(SOURCE_KEY, viaGumroad ? "gumroad" : "seed");
     } catch (_) {}
+  }
+
+  async function verifyGumroadLicense(rawKey) {
+    const productId = String(cfg.productId || cfg.product_id || "").trim();
+    const permalink = String(cfg.productPermalink || cfg.product_permalink || "").trim();
+    if (!productId && !permalink) {
+      return { ok: false, message: "Product not configured for license verify." };
+    }
+    const body = new URLSearchParams();
+    if (productId) body.set("product_id", productId);
+    else body.set("product_permalink", permalink);
+    body.set("license_key", String(rawKey || "").trim());
+    const res = await fetch("https://api.gumroad.com/v2/licenses/verify", {
+      method: "POST",
+      headers: { "Content-Type": "application/x-www-form-urlencoded" },
+      body: body.toString()
+    });
+    let data = null;
+    try { data = await res.json(); } catch (_) { data = null; }
+    if (data && data.success === true) {
+      const p = data.purchase || {};
+      if (p.refunded || p.chargebacked || p.disputed) {
+        return { ok: false, message: "This license is no longer valid." };
+      }
+      return { ok: true, data: data };
+    }
+    return {
+      ok: false,
+      message: (data && (data.message || data.error)) || "Invalid key. Check and try again."
+    };
   }
 
   function applyUnlockUI() {
@@ -381,25 +419,47 @@
     els.unlockModal.hidden = true;
   }
 
-  function redeemKey() {
-    const key = normalizeKey(els.licenseInput.value);
+  async function redeemKey() {
+    const raw = String(els.licenseInput.value || "").trim();
+    const key = normalizeKey(raw);
     if (!key) {
       els.modalMsg.textContent = "Enter a license key.";
       els.modalMsg.className = "modal-msg error";
       return;
     }
-    if (!validKeys.has(key)) {
-      els.modalMsg.textContent = "Invalid key. Check and try again.";
-      els.modalMsg.className = "modal-msg error";
+    if (validKeys.has(key)) {
+      unlocked = true;
+      saveLicense(key, false);
+      applyUnlockUI();
+      els.modalMsg.textContent = "Unlocked — thank you!";
+      els.modalMsg.className = "modal-msg ok";
+      showToast("LockFit unlocked");
+      setTimeout(closeUnlockModal, 700);
       return;
     }
-    unlocked = true;
-    saveLicense(key);
-    applyUnlockUI();
-    els.modalMsg.textContent = "Unlocked — thank you!";
-    els.modalMsg.className = "modal-msg ok";
-    showToast("LockFit unlocked");
-    setTimeout(closeUnlockModal, 700);
+    if (els.btnRedeem) els.btnRedeem.disabled = true;
+    els.modalMsg.textContent = "Checking license…";
+    els.modalMsg.className = "modal-msg";
+    try {
+      const result = await verifyGumroadLicense(raw);
+      if (result.ok) {
+        unlocked = true;
+        saveLicense(key, true);
+        applyUnlockUI();
+        els.modalMsg.textContent = "Unlocked — thank you!";
+        els.modalMsg.className = "modal-msg ok";
+        showToast("LockFit unlocked");
+        setTimeout(closeUnlockModal, 700);
+        return;
+      }
+      els.modalMsg.textContent = result.message || "Invalid key. Check and try again.";
+      els.modalMsg.className = "modal-msg error";
+    } catch (_) {
+      els.modalMsg.textContent = "Could not verify license. Check your connection and try again.";
+      els.modalMsg.className = "modal-msg error";
+    } finally {
+      if (els.btnRedeem) els.btnRedeem.disabled = false;
+    }
   }
 
   /**
