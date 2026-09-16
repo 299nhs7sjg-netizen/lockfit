@@ -4,7 +4,7 @@
 
 **Price:** $0.99 lifetime (license key)
 
-Live (GitHub Pages): configure after deploy — typically `https://299nhs7sjg-netizen.github.io/lockfit/`
+Live: https://299nhs7sjg-netizen.github.io/lockfit/
 
 ## Features (MVP)
 
