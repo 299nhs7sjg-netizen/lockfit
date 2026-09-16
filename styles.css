@@ -297,6 +297,9 @@ footer.app-footer {
   border-top: 1px solid var(--border);
   margin-top: 0.5rem;
 }
+.more-tools { margin: .5rem 0 0; font-size: .78rem; color: var(--muted); }
+.more-tools a { color: var(--muted); text-decoration: underline; text-underline-offset: 2px; }
+.more-tools a:hover { color: var(--text); }
 
 /* Modal */
 .modal-backdrop {
