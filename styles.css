@@ -297,19 +297,6 @@ footer.app-footer {
   border-top: 1px solid var(--border);
   margin-top: 0.5rem;
 }
-.cross-promo {
-  margin: .55rem 0 0;
-  padding: .55rem .5rem .1rem;
-  border-top: 1px solid color-mix(in srgb, var(--muted) 35%, transparent);
-  font-size: .78rem;
-  color: var(--muted);
-}
-.cross-promo-intro { margin: 0 0 .35rem; }
-.cross-promo-hub { margin: 0 0 .35rem; }
-.cross-promo-hub a, .cross-promo-list a { color: var(--muted); text-decoration: underline; text-underline-offset: 2px; }
-.cross-promo-hub a:hover, .cross-promo-list a:hover { color: var(--text); }
-.cross-promo-list { list-style: none; margin: 0; padding: 0; display: grid; gap: .2rem; }
-.cross-promo-list .cross-buy { font-weight: 600; color: var(--accent, var(--text)); }
 
 /* Modal */
 .modal-backdrop {
@@ -373,3 +360,7 @@ footer.app-footer {
   box-shadow: 0 8px 24px rgba(0,0,0,0.4);
 }
 .toast[hidden] { display: none; }
+
+.more-tools { margin: .5rem 0 0; font-size: .78rem; color: var(--muted); }
+.more-tools a { color: var(--muted); text-decoration: underline; text-underline-offset: 2px; }
+.more-tools a:hover { color: var(--text); }
