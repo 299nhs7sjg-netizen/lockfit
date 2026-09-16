@@ -2,7 +2,7 @@
 
 **Preview any wallpaper on real iPhone / Android lock screens** so Dynamic Island, clocks, and punch-holes don’t cut faces. Export a safe-crop PNG.
 
-**Price:** $0.99 lifetime (license key)
+**Price:** $2.99 lifetime (license key)
 
 Live: https://299nhs7sjg-netizen.github.io/lockfit/
 
@@ -13,7 +13,7 @@ Live: https://299nhs7sjg-netizen.github.io/lockfit/
 3. Pan & zoom under overlays
 4. Export wallpaper-only safe crop, or with UI overlay
 5. Free tier: 2 device presets + watermark on export  
-   Unlock ($0.99): all devices + no watermark
+   Unlock ($2.99): all devices + no watermark
 6. Unlock modal: checkout URL from `config.js` + **license key entry only**
 7. Ad placeholders (`data-ad`) on free; hidden when unlocked
 

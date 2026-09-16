@@ -1,4 +1,4 @@
-# LockFit payments ($0.99 lifetime)
+# LockFit payments ($2.99 lifetime)
 
 ## Goal
 
@@ -6,7 +6,7 @@ Sell a **lifetime unlock** for LockFit. After payment, deliver a license key (`I
 
 ## Checkout URL
 
-1. Create a $0.99 product on Gumroad, Lemon Squeezy, Stripe Payment Link, or similar.
+1. Create a $2.99 product on Gumroad, Lemon Squeezy, Stripe Payment Link, or similar.
 2. Set `checkoutUrl` in `config.js` to that product’s checkout / payment link.
 3. Redeploy / push so Pages picks up the change.
 
@@ -27,7 +27,7 @@ While `checkoutUrl` is empty, the Unlock modal shows a placeholder and still acc
 ## Suggested product copy
 
 - **Name:** LockFit — Lifetime Unlock  
-- **Price:** $0.99  
+- **Price:** $2.99  
 - **Description:** Unlock all device presets and watermark-free PNG exports for LockFit. You’ll receive a license key by email after purchase.
 
 ## Fulfillment checklist

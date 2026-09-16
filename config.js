@@ -1,7 +1,7 @@
 /* LockFit public config — safe to commit */
 window.LOCKFIT_CONFIG = {
   checkoutUrl: "", // set to Gumroad/Lemon Squeezy/etc. checkout URL
-  priceLabel: "$0.99 lifetime",
+  priceLabel: "$2.99 lifetime",
   productName: "LockFit",
   /* Seed keys for MVP testing — customers get keys after purchase via PAYMENTS.md flow */
   VALID_KEYS: [
