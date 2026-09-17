@@ -374,3 +374,144 @@ footer.app-footer {
 .cross-promo-hub a:hover, .cross-promo-list a:hover { color: var(--text); }
 .cross-promo-list { list-style: none; margin: 0; padding: 0; display: grid; gap: .2rem; }
 .cross-promo-list .cross-buy { font-weight: 600; color: var(--accent, var(--text)); }
+
+/* Louder Unlock / Buy CTAs (conversion) */
+.btn.unlock-cta {
+  font-weight: 800;
+  font-size: 0.98rem;
+  min-height: 44px;
+  padding: 0.7rem 1.15rem;
+  box-shadow: 0 4px 16px rgba(0,0,0,.35), 0 0 0 1px rgba(255,255,255,.12) inset;
+  letter-spacing: 0.01em;
+  text-decoration: none;
+}
+.header-actions .btn.unlock-cta {
+  white-space: nowrap;
+}
+.free-note {
+  margin: 0 0 0.75rem;
+  padding: 0.65rem 0.75rem;
+  border-radius: 10px;
+  border: 1px solid var(--border);
+  background: rgba(91, 140, 255, 0.08);
+  font-size: 0.85rem;
+  color: var(--muted);
+}
+.free-note strong { color: var(--text); }
+.free-note-cta {
+  display: flex;
+  margin-top: 0.65rem;
+}
+.free-note-cta .btn.unlock-cta {
+  width: 100%;
+}
+.unlock-inline {
+  margin-bottom: 0.55rem;
+}
+.unlock-inline[hidden] { display: none !important; }
+.soft-path {
+  margin: 0 0 0.75rem;
+  font-size: 0.82rem;
+  color: var(--muted);
+}
+.checkout-hint {
+  font-size: 0.85rem;
+  color: var(--warn);
+  margin: 0 0 0.75rem;
+}
+.checkout-hint.soft { color: var(--muted); }
+.footer-unlock-btn,
+.footer-buy-btn {
+  text-decoration: none;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+.app-footer .btn.unlock-cta {
+  min-height: 44px;
+}
+.app-footer {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: center;
+  gap: 0.65rem 1rem;
+}
+.tiny {
+  margin: 0.75rem 0 0;
+  font-size: 0.75rem;
+  color: var(--muted);
+}
+
+/* Unlock modal mobile */
+.modal-backdrop {
+  align-items: end;
+  overflow: auto;
+  -webkit-overflow-scrolling: touch;
+  padding: 0.75rem;
+  padding-bottom: max(0.75rem, env(safe-area-inset-bottom));
+  display: flex;
+  justify-content: center;
+}
+.modal-backdrop[hidden] { display: none; }
+@media (min-width: 520px) {
+  .modal-backdrop { align-items: center; }
+}
+.modal {
+  max-height: min(92vh, 720px);
+  overflow: auto;
+  -webkit-overflow-scrolling: touch;
+  width: min(420px, 100%);
+  margin-bottom: 0;
+}
+.modal #checkoutLink,
+.modal #btnRedeem {
+  min-height: 48px;
+  width: 100%;
+  box-sizing: border-box;
+  text-align: center;
+}
+.modal input[type="text"] {
+  min-height: 44px;
+  font-size: 16px; /* avoid iOS zoom */
+  width: 100%;
+  box-sizing: border-box;
+}
+
+/* Slim sticky Unlock bar (free tier only) */
+.sticky-unlock {
+  position: fixed;
+  left: 0; right: 0; bottom: 0;
+  z-index: 120;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.65rem;
+  padding: 0.55rem 0.85rem;
+  padding-bottom: max(0.55rem, env(safe-area-inset-bottom));
+  background: rgba(12,14,20,.94);
+  border-top: 1px solid rgba(255,255,255,.12);
+  backdrop-filter: blur(10px);
+  box-shadow: 0 -8px 28px rgba(0,0,0,.35);
+}
+.sticky-unlock[hidden] { display: none !important; }
+.sticky-unlock-copy {
+  font-size: 0.82rem;
+  color: var(--muted);
+  flex: 1;
+  min-width: 0;
+}
+.sticky-unlock .btn.unlock-cta {
+  flex-shrink: 0;
+  min-height: 44px;
+}
+body.has-sticky-unlock {
+  padding-bottom: calc(64px + env(safe-area-inset-bottom));
+}
+body.has-sticky-unlock .toast {
+  bottom: calc(4.5rem + env(safe-area-inset-bottom));
+}
+@media (max-width: 420px) {
+  .brand .tag { display: none; }
+  .sticky-unlock-copy { font-size: 0.75rem; }
+}

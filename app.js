@@ -136,6 +136,14 @@
     btnReset: $("btnReset"),
     btnExport: $("btnExport"),
     btnUnlock: $("btnUnlock"),
+    unlockLink: $("unlockLink"),
+    unlockNearExport: $("unlockNearExport"),
+    unlockInline: $("unlockInline"),
+    stickyUnlock: $("stickyUnlock"),
+    stickyUnlockBtn: $("stickyUnlockBtn"),
+    footerUnlock: $("footerUnlock"),
+    footerBuy: $("footerBuy"),
+    freeNote: $("freeNote"),
     licenseBadge: $("licenseBadge"),
     unlockModal: $("unlockModal"),
     licenseInput: $("licenseInput"),
@@ -144,6 +152,7 @@
     modalMsg: $("modalMsg"),
     checkoutLink: $("checkoutLink"),
     checkoutPlaceholder: $("checkoutPlaceholder"),
+    checkoutHint: $("checkoutHint"),
     exportNote: $("exportNote"),
     toast: $("toast"),
     appRoot: $("appRoot")
@@ -220,9 +229,15 @@
     if (unlocked) {
       els.licenseBadge.textContent = "Unlocked";
       els.licenseBadge.classList.add("unlocked");
-      els.btnUnlock.textContent = "Licensed";
+      els.btnUnlock.textContent = "Unlocked ✓";
       els.btnUnlock.disabled = true;
       els.exportNote.textContent = "Unlocked: all devices · no watermark on export.";
+      if (els.freeNote) els.freeNote.hidden = true;
+      if (els.unlockInline) els.unlockInline.hidden = true;
+      if (els.stickyUnlock) els.stickyUnlock.hidden = true;
+      document.body.classList.remove("has-sticky-unlock");
+      if (els.footerUnlock) els.footerUnlock.hidden = true;
+      if (els.footerBuy) els.footerBuy.hidden = true;
       document.body.classList.add("ads-hidden");
       document.querySelectorAll("[data-ad]").forEach((el) => {
         el.hidden = true;
@@ -230,10 +245,16 @@
     } else {
       els.licenseBadge.textContent = "Free";
       els.licenseBadge.classList.remove("unlocked");
-      els.btnUnlock.textContent = "Unlock";
+      els.btnUnlock.textContent = "Unlock $2.99";
       els.btnUnlock.disabled = false;
       els.exportNote.textContent =
         "Free exports include a LockFit watermark. Unlock for clean PNGs + all devices.";
+      if (els.freeNote) els.freeNote.hidden = false;
+      if (els.unlockInline) els.unlockInline.hidden = false;
+      if (els.stickyUnlock) els.stickyUnlock.hidden = false;
+      document.body.classList.add("has-sticky-unlock");
+      if (els.footerUnlock) els.footerUnlock.hidden = false;
+      if (els.footerBuy) els.footerBuy.hidden = false;
       document.body.classList.remove("ads-hidden");
       document.querySelectorAll("[data-ad]").forEach((el) => {
         el.hidden = false;
@@ -414,19 +435,56 @@
     img.src = url;
   }
 
+  function wireCheckoutLinks() {
+    const url = (cfg.checkoutUrl || "").trim();
+    const hint = els.checkoutHint;
+    const links = document.querySelectorAll("[data-checkout]");
+    links.forEach(function (el) {
+      if (url) {
+        el.href = url;
+        el.setAttribute("target", "_blank");
+        el.setAttribute("rel", "noopener");
+        el.removeAttribute("aria-disabled");
+        el.hidden = false;
+        el.onclick = null;
+      } else {
+        el.href = "#";
+        el.setAttribute("aria-disabled", "true");
+        el.onclick = function (e) {
+          e.preventDefault();
+          if (els.checkoutPlaceholder) {
+            els.checkoutPlaceholder.hidden = false;
+          }
+        };
+      }
+    });
+    if (els.checkoutLink) {
+      if (url) {
+        els.checkoutLink.href = url;
+        els.checkoutLink.hidden = false;
+        if (els.checkoutPlaceholder) els.checkoutPlaceholder.hidden = true;
+      } else {
+        els.checkoutLink.hidden = true;
+        if (els.checkoutPlaceholder) els.checkoutPlaceholder.hidden = false;
+      }
+    }
+    if (hint) {
+      if (url) {
+        hint.hidden = false;
+        hint.className = "checkout-hint soft";
+        hint.textContent =
+          "After checkout, your store email includes a license key. Paste it below.";
+      } else {
+        hint.hidden = true;
+      }
+    }
+  }
+
   function openUnlockModal() {
     els.modalMsg.textContent = "";
     els.modalMsg.className = "modal-msg";
     els.licenseInput.value = "";
-    const url = (cfg.checkoutUrl || "").trim();
-    if (url) {
-      els.checkoutLink.href = url;
-      els.checkoutLink.hidden = false;
-      els.checkoutPlaceholder.hidden = true;
-    } else {
-      els.checkoutLink.hidden = true;
-      els.checkoutPlaceholder.hidden = false;
-    }
+    wireCheckoutLinks();
     els.unlockModal.hidden = false;
     els.licenseInput.focus();
   }
@@ -671,6 +729,10 @@
   els.showOverlay.addEventListener("change", renderOverlay);
   els.btnExport.addEventListener("click", exportPng);
   els.btnUnlock.addEventListener("click", openUnlockModal);
+  if (els.unlockLink) els.unlockLink.addEventListener("click", openUnlockModal);
+  if (els.unlockNearExport) els.unlockNearExport.addEventListener("click", openUnlockModal);
+  if (els.stickyUnlockBtn) els.stickyUnlockBtn.addEventListener("click", openUnlockModal);
+  if (els.footerUnlock) els.footerUnlock.addEventListener("click", openUnlockModal);
   els.btnCloseModal.addEventListener("click", closeUnlockModal);
   els.btnRedeem.addEventListener("click", redeemKey);
   els.licenseInput.addEventListener("keydown", (e) => {
@@ -717,6 +779,7 @@
 
   // Init
   loadLicense();
+  wireCheckoutLinks();
   applyUnlockUI();
   setupPhone();
 })();

@@ -20,7 +20,7 @@
     </div>
     <div class="header-actions">
       <span id="licenseBadge" class="badge">Free</span>
-      <button type="button" class="btn btn-sm btn-primary" id="btnUnlock">Unlock</button>
+      <button type="button" class="btn btn-sm btn-primary unlock-cta" id="btnUnlock">Unlock $2.99</button>
     </div>
   </header>
 
@@ -82,6 +82,15 @@
           <label class="toggle"><input type="radio" name="exportMode" value="safe" checked /> Wallpaper only (safe crop)</label>
           <label class="toggle"><input type="radio" name="exportMode" value="overlay" /> Include UI overlay</label>
         </div>
+        <div class="free-note" id="freeNote">
+          <strong>Free tier:</strong> watermarked export · limited devices.
+          <div class="free-note-cta">
+            <button type="button" class="btn btn-primary unlock-cta" id="unlockLink">Unlock $2.99 — lifetime</button>
+          </div>
+        </div>
+        <div class="unlock-inline" id="unlockInline">
+          <button type="button" class="btn btn-primary btn-block unlock-cta" id="unlockNearExport">Unlock $2.99 — get license key</button>
+        </div>
         <button type="button" class="btn btn-primary btn-block" id="btnExport" disabled>Export PNG</button>
         <p class="hint-bar" style="margin-top:0.75rem;text-align:left" id="exportNote">
           Free exports include a LockFit watermark. Unlock for clean PNGs + all devices.
@@ -99,8 +108,10 @@
 
   <footer class="app-footer">
     <div>LockFit · Preview · crop · hang · $2.99 lifetime unlock</div>
+    <button type="button" class="btn btn-primary unlock-cta footer-unlock-btn" id="footerUnlock">Unlock $2.99</button>
+    <a class="btn btn-primary unlock-cta footer-buy-btn" id="footerBuy" data-checkout href="https://greenlight5868.gumroad.com/l/lockfit-lifetime" target="_blank" rel="noopener">Buy $2.99 — lifetime</a>
     <aside class="cross-promo" aria-label="GreenTools">
-      <p class="cross-promo-intro">Four private, in-browser tools — $2.99 lifetime unlock each:</p>
+      <p class="cross-promo-intro">Private in-browser tools — $2.99 lifetime each:</p>
       <p class="cross-promo-hub"><a href="https://299nhs7sjg-netizen.github.io/greentools/">GreenTools hub</a></p>
       <ul class="cross-promo-list">
         <li><a href="https://299nhs7sjg-netizen.github.io/snapfit/">SnapFit</a> — resize/compress for social · <a class="cross-buy" href="https://greenlight5868.gumroad.com/l/snapfit-lifetime" target="_blank" rel="noopener">Buy</a></li>
@@ -113,19 +124,27 @@
   <div class="modal-backdrop" id="unlockModal" hidden>
     <div class="modal" role="dialog" aria-labelledby="unlockTitle" aria-modal="true">
       <h3 id="unlockTitle">Unlock LockFit — $2.99</h3>
-      <p>Get every device preset and watermark-free exports. Enter the license key you receive after purchase.</p>
-      <a id="checkoutLink" class="checkout-link btn btn-primary" href="#" target="_blank" rel="noopener" hidden>Buy $2.99 lifetime</a>
-      <p id="checkoutPlaceholder" style="font-size:0.85rem;color:var(--warn);margin-bottom:0.75rem" hidden>
-        Checkout URL not configured yet — see PAYMENTS.md. You can still redeem a key below.
+      <p>Get every device preset and watermark-free exports. One lifetime license key after checkout.</p>
+      <a id="checkoutLink" class="checkout-link btn btn-primary unlock-cta" data-checkout href="https://greenlight5868.gumroad.com/l/lockfit-lifetime" target="_blank" rel="noopener">Buy $2.99 — lifetime</a>
+      <p class="soft-path">Keep using free anytime. After checkout, paste your license key below.</p>
+      <p id="checkoutPlaceholder" class="checkout-hint" hidden>
+        Checkout URL not set — operator: paste Gumroad lockfit-lifetime URL into config.js → checkoutUrl, then redeploy.
       </p>
+      <p id="checkoutHint" class="checkout-hint soft" hidden></p>
       <label for="licenseInput" class="control-row" style="margin-bottom:0.35rem">License key</label>
       <input type="text" id="licenseInput" placeholder="XXXX-XXXX-XXXX-XXXX (from Gumroad receipt)" autocomplete="off" spellcheck="false" />
       <div class="modal-actions">
-        <button type="button" class="btn btn-primary" id="btnRedeem">Redeem key</button>
+        <button type="button" class="btn btn-primary unlock-cta" id="btnRedeem">Redeem key</button>
         <button type="button" class="btn btn-ghost" id="btnCloseModal">Close</button>
       </div>
       <p class="modal-msg" id="modalMsg"></p>
+      <p class="tiny">Unlock requires a valid license key from checkout. There is no honor unlock.</p>
     </div>
+  </div>
+
+  <div class="sticky-unlock" id="stickyUnlock" hidden>
+    <span class="sticky-unlock-copy">$2.99 lifetime · clean PNG · all devices</span>
+    <button type="button" class="btn btn-primary unlock-cta" id="stickyUnlockBtn">Unlock $2.99</button>
   </div>
 
   <div class="toast" id="toast" hidden></div>
